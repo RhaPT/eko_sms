@@ -25,6 +25,7 @@ Envia um SMS ao cliente e/ou ao admin.
 - Direct100 (PT e BR) Código promocional : **prestashop** (Oferta de 2,50 € / R$ 12 em SMS)
 
   Direct100 PT : http://www.direct100.mobi/activacao
+  
   Direct100 BR : http://www.direct100.mobi/br/cadastro
 
 ##### Contribuições

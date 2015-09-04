@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>eko_sms</name>
+	<displayName><![CDATA[Alerta SMS ]]></displayName>
+	<version><![CDATA[0.1.0]]></version>
+	<description><![CDATA[Enviar SMS]]></description>
+	<author><![CDATA[ekosshop]]></author>
+	<tab><![CDATA[administration]]></tab>
+	<confirmUninstall><![CDATA[Tem a certeza que pretende remover este módulo?]]></confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+</module>

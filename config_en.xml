@@ -2,7 +2,7 @@
 <module>
     <name>eko_sms</name>
     <displayName><![CDATA[SMS alert]]></displayName>
-    <version><![CDATA[0.1.0]]></version>
+    <version><![CDATA[0.1.1]]></version>
     <description><![CDATA[Send SMS]]></description>
     <author><![CDATA[ekosshop]]></author>
     <tab><![CDATA[administration]]></tab>

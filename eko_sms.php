@@ -34,7 +34,7 @@ class eko_sms extends Module
     {
         $this->name     = 'eko_sms';
         $this->tab      = 'administration';
-        $this->version  = '0.1.0';
+        $this->version  = '0.1.1';
         $this->author   = 'ekosshop';
 
         $this->bootstrap = true;
@@ -154,11 +154,17 @@ class eko_sms extends Module
     {
         if (Tools::isSubmit('btnSubmit'))
         {
-            if (empty(Tools::getValue('USERNAME')))
+            $xAux = Tools::getValue('USERNAME');
+            if (empty($xAux))
                 $this->_postErrors[] = $this->l('You have to enter User Name.');
-            if (empty(Tools::getValue('PASSWORD')) AND empty(Configuration::get('EKO_SMS_PASSWORD')))
+
+            $xAux  = Tools::getValue('PASSWORD');
+            $xAux1 = Configuration::get('EKO_SMS_PASSWORD');
+            if (empty($xAux) AND empty($xAux1))
                 $this->_postErrors[] = $this->l('You have to enter Password.');
-            if (empty(Tools::getValue('ADMINMOBILE')))
+
+            $xAux = Tools::getValue('ADMINMOBILE');
+            if (empty($xAux))
                 $this->_postErrors[] = $this->l('You have to enter Admin Mobile Contact.');
             elseif (substr(Tools::getValue('ADMINMOBILE'),0,1) != '+')
                 $this->_postErrors[] = $this->l('Mobile Contact must be enterd like (+351123456789).');
@@ -242,7 +248,8 @@ class eko_sms extends Module
         {
             Configuration::updateValue('EKO_SMS_OP',            Tools::getValue('OP'));
             Configuration::updateValue('EKO_SMS_USERNAME',      Tools::getValue('USERNAME'));
-            if(!empty(Tools::getValue('PASSWORD')))
+            $xAux = Tools::getValue('PASSWORD');
+            if(!empty($xAux))
                 Configuration::updateValue('EKO_SMS_PASSWORD',  Tools::getValue('PASSWORD'));
             Configuration::updateValue('EKO_SMS_ADMINMOBILE',   Tools::getValue('ADMINMOBILE'));
             Configuration::updateValue('EKO_SMS_LOWCOST',       Tools::getValue('LOWCOST'));
@@ -944,7 +951,10 @@ class eko_sms extends Module
         if($this->SMSmsgExist($status) == 0 and $this->SMSMmsgExist($status) == 0)
             return false;
 
-        if(empty(Configuration::get('EKO_SMS_OP')) or empty(Configuration::get('EKO_SMS_USERNAME')) or empty(Configuration::get('EKO_SMS_PASSWORD')))
+        $xAux0 = Configuration::get('EKO_SMS_OP');
+        $xAux1 = Configuration::get('EKO_SMS_USERNAME');
+        $xAux2 = Configuration::get('EKO_SMS_PASSWORD');
+        if(empty($xAux0) or empty($xAux1) or empty($xAux2))
             return false;
 
         $mobile   = '';
@@ -980,7 +990,8 @@ class eko_sms extends Module
             }
         }
 
-        if(!empty(Configuration::get('EKO_SMS_ADMINMOBILE')) and !$this->is_SMSmsgSend($status, $id_order, 1)) {
+        $xAux = Configuration::get('EKO_SMS_ADMINMOBILE');
+        if(!empty($xAux) and !$this->is_SMSmsgSend($status, $id_order, 1)) {
             $smsMerchant = $this->getSMSMmsgDB($status);
             if(!empty($smsMerchant['msg_merchant'])) {
                 // Process msg_merchant
@@ -1090,7 +1101,10 @@ class eko_sms extends Module
         if(!$this->active)
             return;
 
-        if(empty(Configuration::get('EKO_SMS_OP')) or empty(Configuration::get('EKO_SMS_USERNAME')) or empty(Configuration::get('EKO_SMS_PASSWORD'))) {
+        $xAux0 = Configuration::get('EKO_SMS_OP');
+        $xAux1 = Configuration::get('EKO_SMS_USERNAME');
+        $xAux2 = Configuration::get('EKO_SMS_PASSWORD');
+        if(empty($xAux0) or empty($xAux1) or empty($xAux2)) {
             $this->smarty->assign(array(
                                     'status'        => 2,
                                     'callfrom'      => 1,
@@ -1123,7 +1137,10 @@ class eko_sms extends Module
         if(!$this->active)
             return;
 
-        if(empty(Configuration::get('EKO_SMS_OP')) or empty(Configuration::get('EKO_SMS_USERNAME')) or empty(Configuration::get('EKO_SMS_PASSWORD'))) {
+        $xAux0 = Configuration::get('EKO_SMS_OP');
+        $xAux1 = Configuration::get('EKO_SMS_USERNAME');
+        $xAux2 = Configuration::get('EKO_SMS_PASSWORD');
+        if(empty($xAux0) or empty($xAux1) or empty($xAux2)) {
             $this->smarty->assign(array(
                                     'status'        => 2,
                                     'callfrom'      => 2,

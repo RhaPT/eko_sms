@@ -7,3 +7,8 @@ Versão 0.1.1
 Data : 09/09/2015
 
 Bug empty()
+
+Versão 0.1.2015
+Data : 18/09/2015
+
+função array_column() Php 5 < 5.5

@@ -34,7 +34,7 @@ class eko_sms extends Module
     {
         $this->name     = 'eko_sms';
         $this->tab      = 'administration';
-        $this->version  = '0.1.1';
+        $this->version  = '0.1.2';
         $this->author   = 'ekosshop';
 
         $this->bootstrap = true;
@@ -1056,7 +1056,11 @@ class eko_sms extends Module
     }
 
     public function sendSMS($mobile, $msg) {
-        $key = array_search(Configuration::get('EKO_SMS_OP'), array_column($this->smsOP, 'id'));
+        if (function_exists('array_column')) {
+            $key = array_search(Configuration::get('EKO_SMS_OP'), array_column($this->smsOP, 'id'));
+        } else {
+            $key = array_search(Configuration::get('EKO_SMS_OP'), $this->sms_array_column($this->smsOP, 'id'));
+        }
         $op  = $this->smsOP[$key];
         $msg = $this->claenSMSmsg($msg);
         $params = array(
@@ -1095,6 +1099,70 @@ class eko_sms extends Module
         }
 
         return true;
+    }
+
+    /**
+     * Returns the values from a single column of the input array, identified by
+     * the $columnKey.
+     *
+     * Optionally, you may provide an $indexKey to index the values in the returned
+     * array by the values from the $indexKey column in the input array.
+     *
+     * @param array $input A multi-dimensional array (record set) from which to pull
+     *                     a column of values.
+     * @param mixed $columnKey The column of values to return. This value may be the
+     *                         integer key of the column you wish to retrieve, or it
+     *                         may be the string key name for an associative array.
+     * @param mixed $indexKey (Optional.) The column to use as the index/keys for
+     *                        the returned array. This value may be the integer key
+     *                        of the column, or it may be the string key name.
+     * @return array
+    */
+    public function sms_array_column($input = null, $columnKey = null, $indexKey = null)
+    {
+
+        $paramsInput = $input;
+        $paramsColumnKey = ($columnKey !== null) ? (string) $columnKey : null;
+
+        $paramsIndexKey = null;
+        if (isset($indexKey)) {
+            if (is_float($indexKey) || is_int($indexKey)) {
+                $paramsIndexKey = (int) $indexKey;
+            } else {
+                $paramsIndexKey = (string) $indexKey;
+            }
+        }
+
+        $resultArray = array();
+
+        foreach ($paramsInput as $row) {
+            $key = $value = null;
+            $keySet = $valueSet = false;
+
+            if ($paramsIndexKey !== null && array_key_exists($paramsIndexKey, $row)) {
+                $keySet = true;
+                $key = (string) $row[$paramsIndexKey];
+            }
+
+            if ($paramsColumnKey === null) {
+                $valueSet = true;
+                $value = $row;
+            } elseif (is_array($row) && array_key_exists($paramsColumnKey, $row)) {
+                $valueSet = true;
+                $value = $row[$paramsColumnKey];
+            }
+
+            if ($valueSet) {
+                if ($keySet) {
+                    $resultArray[$key] = $value;
+                } else {
+                    $resultArray[] = $value;
+                }
+            }
+
+        }
+
+        return $resultArray;
     }
 
     public function hookdisplayAdminOrderRight($params) {

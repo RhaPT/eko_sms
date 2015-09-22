@@ -35,7 +35,7 @@ class apiClickatell extends ObjectModel
     public function __construct($params) {
         $this->UserName = $params['username'];
         $this->Password = $params['password'];
-        $this->msg      = $params['text'];
+        $this->msg      = htmlspecialchars($params['text']);
         $this->mobile   = str_replace('+','',$params['to']);
     }
 
@@ -43,7 +43,7 @@ class apiClickatell extends ObjectModel
         $token  = $this->getAPIToken();
         if(!empty($token)) {
             $url    = 'https://api.clickatell.com/http/sendmsg';
-            $data   = array('session_id' => $token, 'text' => urlencode($this->msg), 'to' => $this->mobile);
+            $data   = array('session_id' => $token, 'text' => $this->msg, 'to' => $this->mobile);
             $return = $this->dr_request($data, $url);
             $send   = explode(":",$return);
             if($send[0] == "ID")
@@ -77,6 +77,11 @@ class apiClickatell extends ObjectModel
 
     private function dr_request($data, $apiurl) {
         $sQuery = http_build_query($data);
+        /* Isto é um atalho, mas o que eu sei de PHP não chega para fazer uma alteração melhor
+           Deve substituir 351931234567 pelo número de telemóvel registado no clickatell de forma
+           a poder aparecer o número correto do remetente e não um número +447781470020668 ou outro
+        */
+        $sQuery = $sQuery . '&from=351931234567&set_mobile_originated=1'
         $aContextData = array (
                             'method' => 'POST',
                             'header' => "Connection: close\r\n".

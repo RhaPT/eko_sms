@@ -34,7 +34,7 @@ class eko_sms extends Module
     {
         $this->name     = 'eko_sms';
         $this->tab      = 'administration';
-        $this->version  = '0.1.2';
+        $this->version  = '0.1.3';
         $this->author   = 'ekosshop';
 
         $this->bootstrap = true;
@@ -1034,7 +1034,7 @@ class eko_sms extends Module
         return($msg);
     }
 
-    private function claenSMSmsg($msg) {
+    private function cleanSMSmsg($msg) {
         if(Configuration::get('EKO_SMS_CLEANMSG')) {
             $accentedCharacters = array ( 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë',
                                       'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø',
@@ -1062,7 +1062,7 @@ class eko_sms extends Module
             $key = array_search(Configuration::get('EKO_SMS_OP'), $this->sms_array_column($this->smsOP, 'id'));
         }
         $op  = $this->smsOP[$key];
-        $msg = $this->claenSMSmsg($msg);
+        $msg = $this->cleanSMSmsg($msg);
         $params = array(
                 'username' => Configuration::get('EKO_SMS_USERNAME'),
                 'password' => Configuration::get('EKO_SMS_PASSWORD'),

@@ -31,19 +31,26 @@ class apiClickatell extends ObjectModel
     public $UserName;
     public $Password;
     public $mobile;
+    public $from;
 
     public function __construct($params) {
         $this->UserName = $params['username'];
         $this->Password = $params['password'];
-        $this->msg      = $params['text'];
+        $this->msg      = htmlspecialchars($params['text']);
         $this->mobile   = str_replace('+','',$params['to']);
+        $this->from     = str_replace('+','',$params['from']);
     }
 
     public function SMSsend() {
         $token  = $this->getAPIToken();
         if(!empty($token)) {
             $url    = 'https://api.clickatell.com/http/sendmsg';
-            $data   = array('session_id' => $token, 'text' => urlencode($this->msg), 'to' => $this->mobile);
+            /* 
+                Obrigado ao Jonadabe pelo alteração.
+                Fica aqui a alteração com a substituição do numero do remetente pelo numero utilizado na configuração do modulo.
+                De forma a poder aparecer o número correto do remetente e não um número +447781470020668 ou outro
+            */
+            $data   = array('session_id' => $token, 'text' => $this->msg, 'to' => $this->mobile, 'from' => $this->from, 'set_mobile_originated' => 1);
             $return = $this->dr_request($data, $url);
             $send   = explode(":",$return);
             if($send[0] == "ID")
